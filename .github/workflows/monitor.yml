@@ -1,11 +1,8 @@
 name: quota-monitor
 
+# Monitoring stopped at the owner's request.
 on:
-  repository_dispatch:
-    types: [tick]          # cron-job.org 每 5 分钟 POST 触发（见 docs/cron-setup.md）
-  workflow_dispatch: {}    # 手动触发
-  schedule:
-    - cron: "*/15 * * * *" # 兜底：外部定时器失效时仍有 15 分钟级监控
+  workflow_dispatch: {}
 
 concurrency:
   group: quota-monitor
@@ -16,6 +13,7 @@ permissions:
 
 jobs:
   check:
+    if: ${{ false }} # Paused: do not run checks or send notifications.
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
